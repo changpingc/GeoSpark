@@ -29,6 +29,7 @@ import com.vividsolutions.jts.geom.Polygon;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.Buffer;
 
 import static org.datasyslab.geospark.formatMapper.shapefileParser.parseUtils.shp.ShapeFileConst.DOUBLE_LENGTH;
 import static org.datasyslab.geospark.formatMapper.shapefileParser.parseUtils.shp.ShapeFileConst.INT_LENGTH;
@@ -127,7 +128,7 @@ public class ShapeSerde
 
         ByteBuffer buffer = newBuffer(calculateBufferSize(multiPoint));
         putType(buffer, ShapeType.MULTIPOINT);
-        buffer.position(buffer.position() + 4 * DOUBLE_LENGTH);
+        ((Buffer) buffer).position(buffer.position() + 4 * DOUBLE_LENGTH);
         buffer.putInt(numPoints);
         for (int i = 0; i < numPoints; i++) {
             Point point = (Point) multiPoint.getGeometryN(i);
@@ -161,7 +162,7 @@ public class ShapeSerde
     private static void putHeader(ByteBuffer buffer, ShapeType type, int numPoints, int numParts)
     {
         putType(buffer, type);
-        buffer.position(buffer.position() + 4 * DOUBLE_LENGTH);
+        ((Buffer) buffer).position(buffer.position() + 4 * DOUBLE_LENGTH);
         buffer.putInt(numParts);
         buffer.putInt(numPoints);
     }

@@ -21,6 +21,7 @@ import com.esotericsoftware.kryo.io.Input;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.Buffer;
 
 public class ShapeReaderFactory
 {
@@ -51,7 +52,7 @@ public class ShapeReaderFactory
             @Override
             public void skip(int numBytes)
             {
-                leBuffer.position(leBuffer.position() + numBytes);
+                ((Buffer) leBuffer).position(leBuffer.position() + numBytes);
             }
         };
     }

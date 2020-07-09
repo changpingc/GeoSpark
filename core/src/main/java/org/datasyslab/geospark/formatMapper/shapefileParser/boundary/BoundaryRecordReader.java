@@ -26,6 +26,7 @@ import org.apache.hadoop.mapreduce.TaskAttemptContext;
 import org.apache.hadoop.mapreduce.lib.input.CombineFileSplit;
 
 import java.io.IOException;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
@@ -97,7 +98,7 @@ public class BoundaryRecordReader
         // use byte buffer to abstract 8 parameters of bound box.
         ByteBuffer buffer = ByteBuffer.wrap(bytes);
         //skip first 36 bytes
-        buffer.position(buffer.position() + 36);
+        ((Buffer) buffer).position(buffer.position() + 36);
         buffer.order(ByteOrder.LITTLE_ENDIAN);
         double[] bounds = new double[8];
         buffer.asDoubleBuffer().get(bounds);
