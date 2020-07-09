@@ -33,8 +33,6 @@ import org.datasyslab.geospark.joinJudgement.DynamicIndexLookupJudgement;
 import org.datasyslab.geospark.joinJudgement.LeftIndexLookupJudgement;
 import org.datasyslab.geospark.joinJudgement.NestedLoopJudgement;
 import org.datasyslab.geospark.joinJudgement.RightIndexLookupJudgement;
-import org.datasyslab.geospark.monitoring.GeoSparkMetric;
-import org.datasyslab.geospark.monitoring.GeoSparkMetrics;
 import org.datasyslab.geospark.spatialPartitioning.SpatialPartitioner;
 import org.datasyslab.geospark.spatialRDD.CircleRDD;
 import org.datasyslab.geospark.spatialRDD.SpatialRDD;
@@ -453,10 +451,6 @@ public class JoinQuery
         verifyPartitioningMatch(leftRDD, rightRDD);
 
         SparkContext sparkContext = leftRDD.spatialPartitionedRDD.context();
-        GeoSparkMetric buildCount = GeoSparkMetrics.createMetric(sparkContext, "buildCount");
-        GeoSparkMetric streamCount = GeoSparkMetrics.createMetric(sparkContext, "streamCount");
-        GeoSparkMetric resultCount = GeoSparkMetrics.createMetric(sparkContext, "resultCount");
-        GeoSparkMetric candidateCount = GeoSparkMetrics.createMetric(sparkContext, "candidateCount");
 
         final SpatialPartitioner partitioner =
                 (SpatialPartitioner) rightRDD.spatialPartitionedRDD.partitioner().get();
@@ -481,8 +475,7 @@ public class JoinQuery
                                 joinParams.considerBoundaryIntersection,
                                 joinParams.indexType,
                                 joinParams.joinBuildSide,
-                                dedupParams,
-                                buildCount, streamCount, resultCount, candidateCount);
+                                dedupParams);
                 resultWithDuplicates = leftRDD.spatialPartitionedRDD.zipPartitions(rightRDD.spatialPartitionedRDD, judgement);
             }
         }/*

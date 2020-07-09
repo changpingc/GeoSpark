@@ -33,7 +33,6 @@ import org.apache.spark.storage.StorageLevel
 import org.apache.spark.{SparkConf, SparkContext}
 import org.datasyslab.geospark.enums.{FileDataSplitter, GridType, IndexType, JoinBuildSide}
 import org.datasyslab.geospark.formatMapper.EarthdataHDFPointMapper
-import org.datasyslab.geospark.monitoring.GeoSparkListener
 import org.datasyslab.geospark.serde.GeoSparkKryoRegistrator
 import org.datasyslab.geospark.spatialOperator.JoinQuery.JoinParams
 import org.datasyslab.geospark.spatialOperator.{JoinQuery, KNNQuery, RangeQuery}
@@ -48,7 +47,6 @@ class scalaTest extends FunSpec with BeforeAndAfterAll {
     conf.set("spark.kryo.registrator", classOf[GeoSparkKryoRegistrator].getName)
 
     val sc = new SparkContext(conf)
-    sc.addSparkListener(new GeoSparkListener)
     Logger.getLogger("org").setLevel(Level.WARN)
     Logger.getLogger("akka").setLevel(Level.WARN)
     sc
